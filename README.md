@@ -128,3 +128,19 @@ range and the user can overwrite the index range as he sees fit.
 A reference manual can be found in doc/refman.pdf resp.
 doc/html/index.html (type in 'make docu' to compile the doxygen
 documentation for the HTML files).
+
+
+--------------------------------
+NAC:
+
+sudo add-apt-repository --yes ppa:xqms/opencv-nonfree
+sudo apt-get update
+sudo apt-get install libopencv-nonfree-dev
+sudo apt-get install libboost-all-dev libcv-dev freeglut3-dev libxmu-dev libxi-dev
+sudo apt-get install libcgal10 libgmp10 libcgal-dev libgmp-dev # extended build
+git clone https://github.com/nickarmstrongcrews/3dpcp.git 3dpcp
+cd 3dpcp
+make
+cd .build # extended build
+cmake -DWITH_FBR=ON -DWITH_TOOLS=ON -DWITH_MODEL=ON .. # extended build
+make # extended build
