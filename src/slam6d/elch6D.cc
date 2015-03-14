@@ -225,6 +225,9 @@ void elch6D::slim_graph_out(graph_t g, string &out_file)
   dot_file.close();
 }
 
+// NAC: for boost 1.55 update
+typedef graph_t::vertex_descriptor vertex_t;
+
 /**
  * graph balancer algorithm computes the weights
  * @param g the graph
@@ -240,20 +243,33 @@ void elch6D::graph_balancer(graph_t &g, int f, int l, double *weights)
   weights[f] = 0;
   weights[l] = 1;
 
-  int *p = new int[num_vertices(g)];
-  int *p_min = new int[num_vertices(g)];
-  double *d = new double[num_vertices(g)];
-  double *d_min = new double[num_vertices(g)];
+  // NAC: for boost 1.55 update
+  //int *p = new int[num_vertices(g)];
+  //int *p_min = new int[num_vertices(g)];
+  //double *d = new double[num_vertices(g)];
+  //double *d_min = new double[num_vertices(g)];
   double dist;
   bool do_swap = false;
   list<int>::iterator si, ei, s_min, e_min;
+
+  // NAC: for boost 1.55 update
+  std::vector<double> d(num_vertices(g));
+  std::vector<vertex_t> p(num_vertices(g));
+  std::vector<double> d_min(num_vertices(g));
+  std::vector<vertex_t> p_min(num_vertices(g));
 
   // process all junctions
   while(!crossings.empty()) {
     dist = -1;
     // find shortest crossing for all vertices on the loop
     for(si = crossings.begin(); si != crossings.end(); ) {
-      dijkstra_shortest_paths(g, *si, boost::predecessor_map(p).distance_map(d));
+      //      dijkstra_shortest_paths(g, *si, boost::predecessor_map(p).distance_map(d));
+      // NAC: for boost 1.55 update
+      vertex_t s = *si;
+      dijkstra_shortest_paths(g,s,
+                         boost::predecessor_map(boost::make_iterator_property_map(p.begin(), get(boost::vertex_index, g))).
+                         distance_map(boost::make_iterator_property_map(d.begin(), get(boost::vertex_index, g)))
+                         );
       ei = si;
       ei++;
       // find shortest crossing for one vertex
