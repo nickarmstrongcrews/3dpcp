@@ -316,10 +316,10 @@ void elch6D::graph_balancer(graph_t &g, int f, int l, double *weights)
     }
   }
 
-  delete[] p;
-  delete[] p_min;
-  delete[] d;
-  delete[] d_min;
+  //delete[] p;
+  //delete[] p_min;
+  //delete[] d;
+  //delete[] d_min;
 
   graph_traits <graph_t>::adjacency_iterator ai, ai_end;
   int s;
